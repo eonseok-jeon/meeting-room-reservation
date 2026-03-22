@@ -1,17 +1,20 @@
 import { css } from '@emotion/react';
 import { Suspense, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Border, Button, Spacing } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
 import { MyReservationSection } from './MyReservationSection';
 import { ReservationDateSelectorSection } from './ReservationDateSelectorSection';
 import { DailyReservationTimelineSection } from './DailyReservationTimelineSection';
+import { ReservationActionMessageBanner } from './ReservationActionMessageBanner';
+import { useReservationActionMessage } from './utils/useReservationActionMessage';
 import { formatDate } from '../../utils/formatDate';
 import { PageHeader } from 'components/PageHeader';
 import { ErrorBoundary } from 'react-error-boundary';
 
 export function ReservationStatusPage() {
   const [date, setDate] = useState(formatDate(new Date()));
+  const [reservationActionMessage, setReservationActionMessage] = useReservationActionMessage();
 
   return (
     <div
@@ -38,9 +41,11 @@ export function ReservationStatusPage() {
         <Spacing size={24} />
       </ErrorBoundary>
 
+      {reservationActionMessage ? <ReservationActionMessageBanner message={reservationActionMessage} /> : null}
+
       <ErrorBoundary fallback={<MyReservationSection.Error />}>
         <Suspense fallback={<MyReservationSection.Skeleton />}>
-          <MyReservationSection />
+          <MyReservationSection onActionMessage={setReservationActionMessage} />
         </Suspense>
       </ErrorBoundary>
 
