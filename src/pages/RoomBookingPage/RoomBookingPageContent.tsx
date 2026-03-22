@@ -5,7 +5,6 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { Border, Spacing } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
 import { PageHeader } from 'components/PageHeader';
-import { SectionHeader } from 'components/SectionHeader';
 import { getRoomsQueryOptions } from 'pages/queryOptions';
 import { RoomBookingAvailableRoomsSection } from './RoomBookingAvailableRoomsSection';
 import { RoomBookingBackLink } from './RoomBookingBackLink';
@@ -67,7 +66,15 @@ RoomBookingPageContent.Skeleton = () => {
           padding: 0 24px;
         `}
       >
-        <SectionHeader title="예약 조건" />
+        <div
+          css={css`
+            height: 20px;
+            width: 80px;
+            border-radius: 4px;
+            background: ${colors.grey50};
+          `}
+        />
+        <Spacing size={16} />
         <div
           css={css`
             height: 220px;
