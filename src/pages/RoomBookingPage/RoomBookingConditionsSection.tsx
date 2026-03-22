@@ -1,23 +1,20 @@
 import { css } from '@emotion/react';
 import { Spacing } from '_tosslib/components';
-import { colors } from '_tosslib/constants/colors';
 import { SectionHeader } from 'components/SectionHeader';
 import { RoomBookingAttendeesField } from './RoomBookingAttendeesField';
 import { RoomBookingDateField } from './RoomBookingDateField';
 import { RoomBookingEndTimeField } from './RoomBookingEndTimeField';
 import { RoomBookingEquipmentField } from './RoomBookingEquipmentField';
+import { RoomBookingFilterError } from './RoomBookingFilterError';
 import { RoomBookingPreferredFloorField } from './RoomBookingPreferredFloorField';
 import { RoomBookingStartTimeField } from './RoomBookingStartTimeField';
 import { Room } from './types';
-import { useRoomBookingSearchParams } from './useRoomBookingSearchParams';
 
 interface RoomBookingConditionsSectionProps {
   rooms: Room[];
 }
 
 export function RoomBookingConditionsSection({ rooms }: RoomBookingConditionsSectionProps) {
-  const { validationError } = useRoomBookingSearchParams();
-
   const floors = [...new Set(rooms.map(room => room.floor))].sort((a, b) => a - b);
 
   return (
@@ -81,24 +78,7 @@ export function RoomBookingConditionsSection({ rooms }: RoomBookingConditionsSec
         <RoomBookingEquipmentField />
       </div>
 
-      {validationError ? (
-        <div
-          css={css`
-            padding: 0 24px;
-          `}
-        >
-          <Spacing size={8} />
-          <span
-            css={css`
-              color: ${colors.red500};
-              font-size: 14px;
-            `}
-            role="alert"
-          >
-            {validationError}
-          </span>
-        </div>
-      ) : null}
+      <RoomBookingFilterError />
     </>
   );
 }

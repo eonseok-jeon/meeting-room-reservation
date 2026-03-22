@@ -37,3 +37,9 @@ export const roomBookingFiltersSchema = z
   });
 
 export type RoomBookingFilters = z.infer<typeof roomBookingFiltersSchema>;
+
+export const roomBookingFormSchema = roomBookingFiltersSchema.extend({
+  selectedRoomId: z.string().min(1, '회의실을 선택해주세요.'),
+});
+
+export type RoomBookingFormValues = z.infer<typeof roomBookingFormSchema>;

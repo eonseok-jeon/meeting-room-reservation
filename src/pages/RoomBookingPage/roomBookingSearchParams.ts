@@ -1,5 +1,3 @@
-import { useCallback, useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import { formatDate } from 'utils/formatDate';
 import { ALL_EQUIPMENT, Equipment } from './constants';
 import { RoomBookingFilters, roomBookingFiltersSchema } from './schema';
@@ -85,53 +83,3 @@ export function createRoomBookingSearchParams(filters: RoomBookingFilters) {
   return nextSearchParams;
 }
 
-export function useRoomBookingSearchParams() {
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const filters = useMemo<RoomBookingFilters>(() => {
-    return readRoomBookingFilters(searchParams);
-  }, [searchParams]);
-
-  const validationResult = useMemo(() => {
-    return roomBookingFiltersSchema.safeParse(filters);
-  }, [filters]);
-
-  const validationError = validationResult.success ? null : validationResult.error.issues[0]?.message ?? null;
-  const isFilterComplete = filters.startTime !== '' && filters.endTime !== '' && validationResult.success;
-
-  const updateFilters = useCallback(
-    (updates: Partial<RoomBookingFilters>) => {
-      setSearchParams(
-        createRoomBookingSearchParams({
-          ...filters,
-          ...updates,
-        }),
-        { replace: true }
-      );
-    },
-    [filters, setSearchParams]
-  );
-
-  const toggleEquipment = useCallback(
-    (equipment: Equipment) => {
-      const selected = filters.equipment.includes(equipment);
-
-      updateFilters({
-        equipment: selected ? filters.equipment.filter(item => item !== equipment) : [...filters.equipment, equipment],
-      });
-    },
-    [filters.equipment, updateFilters]
-  );
-
-  return {
-    ...filters,
-    isFilterComplete,
-    setAttendees: (attendees: number) => updateFilters({ attendees: Math.max(1, attendees) || 1 }),
-    setDate: (date: string) => updateFilters({ date }),
-    setEndTime: (endTime: string) => updateFilters({ endTime }),
-    setPreferredFloor: (preferredFloor: number | null) => updateFilters({ preferredFloor }),
-    setStartTime: (startTime: string) => updateFilters({ startTime }),
-    toggleEquipment,
-    validationError,
-  };
-}

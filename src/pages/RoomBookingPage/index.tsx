@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { RoomBookingPageContent, RoomBookingPageContentSkeleton } from './RoomBookingPageContent';
+import { RoomBookingPageContent } from './RoomBookingPageContent';
 import { useNormalizeRoomBookingSearchParams } from './useNormalizeRoomBookingSearchParams';
 
 export function RoomBookingPage() {
@@ -8,7 +8,7 @@ export function RoomBookingPage() {
 
   return (
     <ErrorBoundary fallback={<RoomBookingPageContent.Error />}>
-      <Suspense fallback={<RoomBookingPageContentSkeleton />}>
+      <Suspense fallback={<RoomBookingPageContent.Skeleton />}>
         <RoomBookingPageContent />
       </Suspense>
     </ErrorBoundary>

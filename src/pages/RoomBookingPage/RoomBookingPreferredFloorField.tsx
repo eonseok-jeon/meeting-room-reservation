@@ -1,21 +1,22 @@
+import { useController } from 'react-hook-form';
 import { Select } from '_tosslib/components';
 import { RoomBookingField } from './RoomBookingField';
-import { useRoomBookingSearchParams } from './useRoomBookingSearchParams';
+import { RoomBookingFormValues } from './schema';
 
 interface RoomBookingPreferredFloorFieldProps {
   floors: number[];
 }
 
 export function RoomBookingPreferredFloorField({ floors }: RoomBookingPreferredFloorFieldProps) {
-  const { preferredFloor, setPreferredFloor } = useRoomBookingSearchParams();
+  const { field } = useController<RoomBookingFormValues, 'preferredFloor'>({ name: 'preferredFloor' });
 
   return (
     <RoomBookingField label="선호 층">
       <Select
-        value={preferredFloor ?? ''}
+        value={field.value ?? ''}
         onChange={event => {
           const value = event.target.value;
-          setPreferredFloor(value === '' ? null : Number(value));
+          field.onChange(value === '' ? null : Number(value));
         }}
         aria-label="선호 층"
       >

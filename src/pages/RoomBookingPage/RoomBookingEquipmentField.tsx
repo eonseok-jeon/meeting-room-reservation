@@ -1,13 +1,22 @@
 import { css } from '@emotion/react';
+import { useController } from 'react-hook-form';
 import { Spacing } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
 import { EQUIPMENT_LABELS } from 'constants/equipmentLabels';
-import { ALL_EQUIPMENT } from './constants';
+import { ALL_EQUIPMENT, Equipment } from './constants';
 import { RoomBookingField } from './RoomBookingField';
-import { useRoomBookingSearchParams } from './useRoomBookingSearchParams';
+import { RoomBookingFormValues } from './schema';
 
 export function RoomBookingEquipmentField() {
-  const { equipment, toggleEquipment } = useRoomBookingSearchParams();
+  const { field } = useController<RoomBookingFormValues, 'equipment'>({ name: 'equipment' });
+
+  const toggleEquipment = (item: Equipment) => {
+    const isSelected = field.value.includes(item);
+    const nextValue = isSelected
+      ? field.value.filter(current => current !== item)
+      : [...field.value, item];
+    field.onChange(nextValue);
+  };
 
   return (
     <RoomBookingField label="필요 장비" gap={0}>
@@ -20,7 +29,7 @@ export function RoomBookingEquipmentField() {
         `}
       >
         {ALL_EQUIPMENT.map(item => {
-          const selected = equipment.includes(item);
+          const selected = field.value.includes(item);
 
           return (
             <button
