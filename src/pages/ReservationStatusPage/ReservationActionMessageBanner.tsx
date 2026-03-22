@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { Spacing, Text } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
-import { ReservationActionMessage } from './utils/useReservationActionMessage';
+import { ReservationActionMessage } from './useReservationActionMessage';
 
 interface ReservationActionMessageBannerProps {
   message: ReservationActionMessage;

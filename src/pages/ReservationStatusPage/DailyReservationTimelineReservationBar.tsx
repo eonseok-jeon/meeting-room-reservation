@@ -1,9 +1,9 @@
 import { css } from '@emotion/react';
 import { colors } from '_tosslib/constants/colors';
 import { EQUIPMENT_LABELS } from 'constants/equipmentLabels';
-import { TOTAL_MINUTES } from './constants/constants';
-import { ReservationWithRoomName } from './types/types';
-import { timeToMinutes } from './utils/formatTime';
+import { TOTAL_MINUTES } from './constants';
+import { ReservationWithRoomName } from './types';
+import { timeToMinutes } from './formatTime';
 
 interface DailyReservationTimelineReservationBarProps {
   isActive: boolean;

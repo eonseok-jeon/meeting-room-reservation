@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 import { Text } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
-import { HOUR_LABELS, TOTAL_MINUTES } from './constants/constants';
-import { timeToMinutes } from './utils/formatTime';
+import { HOUR_LABELS, TOTAL_MINUTES } from './constants';
+import { timeToMinutes } from './formatTime';
 
 export function DailyReservationTimelineHourLabels() {
   return (

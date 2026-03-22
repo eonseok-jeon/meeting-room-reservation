@@ -1,4 +1,4 @@
-import { ReservationWithRoomName } from './types/types';
+import { ReservationWithRoomName } from './types';
 import { DailyReservationTimelineReservationBar } from './DailyReservationTimelineReservationBar';
 
 interface DailyReservationTimelineReservationBarsProps {

@@ -5,7 +5,7 @@ import { colors } from '_tosslib/constants/colors';
 import { cancelReservation } from 'pages/remotes';
 import { MyReservationList } from './MyReservationList';
 import { SectionHeader } from 'components/SectionHeader';
-import { ReservationActionMessage } from './utils/useReservationActionMessage';
+import { ReservationActionMessage } from './useReservationActionMessage';
 import { getMyReservationsQueryOptions, getRoomsQueryOptions } from 'pages/queryOptions';
 
 interface Room {

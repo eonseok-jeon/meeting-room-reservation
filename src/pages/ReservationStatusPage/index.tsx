@@ -7,7 +7,7 @@ import { MyReservationSection } from './MyReservationSection';
 import { ReservationDateSelectorSection } from './ReservationDateSelectorSection';
 import { DailyReservationTimelineSection } from './DailyReservationTimelineSection';
 import { ReservationActionMessageBanner } from './ReservationActionMessageBanner';
-import { useReservationActionMessage } from './utils/useReservationActionMessage';
+import { useReservationActionMessage } from './useReservationActionMessage';
 import { formatDate } from '../../utils/formatDate';
 import { PageHeader } from 'components/PageHeader';
 import { ErrorBoundary } from 'react-error-boundary';
