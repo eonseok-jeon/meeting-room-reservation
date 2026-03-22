@@ -9,6 +9,7 @@ import axios from 'axios';
 import { formatDate } from 'utils/formatDate';
 import { EQUIPMENT_LABELS } from 'constants/equipmentLabels';
 import { PageHeader } from 'components/PageHeader';
+import { SectionHeader } from 'components/SectionHeader';
 
 const ALL_EQUIPMENT = ['tv', 'whiteboard', 'video', 'speaker'];
 
@@ -217,10 +218,7 @@ export function RoomBookingPage() {
           padding: 0 24px;
         `}
       >
-        <Text typography="t5" fontWeight="bold" color={colors.grey900}>
-          예약 조건
-        </Text>
-        <Spacing size={16} />
+        <SectionHeader title="예약 조건" />
 
         {/* 날짜 */}
         <div
@@ -485,21 +483,14 @@ export function RoomBookingPage() {
             padding: 0 24px;
           `}
         >
-          <div
-            css={css`
-              display: flex;
-              align-items: baseline;
-              gap: 6px;
-            `}
-          >
-            <Text typography="t5" fontWeight="bold" color={colors.grey900}>
-              예약 가능 회의실
-            </Text>
-            <Text typography="t7" fontWeight="medium" color={colors.grey500}>
-              {availableRooms.length}개
-            </Text>
-          </div>
-          <Spacing size={16} />
+          <SectionHeader
+            title="예약 가능 회의실"
+            titleAddOn={
+              <Text typography="t7" fontWeight="medium" color={colors.grey500}>
+                {availableRooms.length}개
+              </Text>
+            }
+          />
 
           {availableRooms.length === 0 ? (
             <div

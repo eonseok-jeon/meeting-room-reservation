@@ -5,6 +5,7 @@ import { colors } from '_tosslib/constants/colors';
 import { EQUIPMENT_LABELS } from 'constants/equipmentLabels';
 import { useQuery } from '@tanstack/react-query';
 import { getReservations, getRooms } from 'pages/remotes';
+import { SectionHeader } from 'components/SectionHeader';
 
 interface Room {
   id: string;
@@ -55,10 +56,7 @@ export function DailyReservationTimelineSection({ date }: { date: string }) {
         padding: 0 24px;
       `}
     >
-      <Text typography="t5" fontWeight="bold" color={colors.grey900}>
-        예약 현황
-      </Text>
-      <Spacing size={16} />
+      <SectionHeader title="예약 현황" />
 
       <div
         css={css`

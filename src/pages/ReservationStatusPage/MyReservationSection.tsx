@@ -6,6 +6,7 @@ import { cancelReservation, getMyReservations, getRooms } from 'pages/remotes';
 import { MyReservationList } from './MyReservationList';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { SectionHeader } from 'components/SectionHeader';
 
 interface Room {
   id: string;
@@ -81,23 +82,16 @@ export function MyReservationSection() {
           padding: 0 24px;
         `}
       >
-        <div
-          css={css`
-            display: flex;
-            align-items: baseline;
-            gap: 6px;
-          `}
-        >
-          <Text typography="t5" fontWeight="bold" color={colors.grey900}>
-            내 예약
-          </Text>
-          {myReservationList.length > 0 && (
-            <Text typography="t7" fontWeight="medium" color={colors.grey500}>
-              {myReservationList.length}건
-            </Text>
-          )}
-        </div>
-        <Spacing size={16} />
+        <SectionHeader
+          title="내 예약"
+          titleAddOn={
+            myReservationList.length > 0 ? (
+              <Text typography="t7" fontWeight="medium" color={colors.grey500}>
+                {myReservationList.length}건
+              </Text>
+            ) : undefined
+          }
+        />
 
         {myReservationList.length === 0 ? (
           <div

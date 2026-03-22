@@ -1,8 +1,7 @@
 import { css } from '@emotion/react';
-import { Spacing, Text } from '_tosslib/components';
-import { colors } from '_tosslib/constants/colors';
 import { ReservationDateSelector } from './ReservationDateSelector';
 import { formatDate } from '../../utils/formatDate';
+import { SectionHeader } from 'components/SectionHeader';
 
 interface ReservationDateSelectorSectionProps {
   date: string;
@@ -16,10 +15,7 @@ export function ReservationDateSelectorSection({ date, onDateChange }: Reservati
         padding: 0 24px;
       `}
     >
-      <Text typography="t5" fontWeight="bold" color={colors.grey900}>
-        날짜 선택
-      </Text>
-      <Spacing size={16} />
+      <SectionHeader title="날짜 선택" />
       <div
         css={css`
           display: flex;
