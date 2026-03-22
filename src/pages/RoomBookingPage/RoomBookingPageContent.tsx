@@ -10,12 +10,13 @@ import { RoomBookingAvailableRoomsSection } from './RoomBookingAvailableRoomsSec
 import { RoomBookingBackLink } from './RoomBookingBackLink';
 import { RoomBookingConditionsSection } from './RoomBookingConditionsSection';
 import { RoomBookingErrorBanner } from './RoomBookingErrorBanner';
+import { RoomBookingFilterError } from './RoomBookingFilterError';
 import { useRoomBookingForm } from './useRoomBookingForm';
 
 export function RoomBookingPageContent() {
   const { data: rooms } = useSuspenseQuery(getRoomsQueryOptions());
 
-  const { form, isFilterComplete } = useRoomBookingForm();
+  const { form, isFilterComplete, filterErrorMessage } = useRoomBookingForm();
 
   return (
     <FormProvider {...form}>
@@ -32,6 +33,8 @@ export function RoomBookingPageContent() {
         <Spacing size={24} />
 
         <RoomBookingConditionsSection rooms={rooms} />
+
+        <RoomBookingFilterError message={filterErrorMessage} />
 
         <Spacing size={24} />
         <Border size={8} />

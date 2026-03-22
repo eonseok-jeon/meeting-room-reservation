@@ -28,12 +28,29 @@ export function useRoomBookingForm() {
   const preferredFloor = watch('preferredFloor');
 
   const hasTimeInputs = startTime !== '' && endTime !== '';
-  const hasFilterErrors =
-    formState.errors.date != undefined ||
-    formState.errors.startTime != undefined ||
-    formState.errors.endTime != undefined ||
-    formState.errors.attendees != undefined;
-  const isFilterComplete = hasTimeInputs && hasFilterErrors === false;
+
+  const filterErrorMessage = (() => {
+    if (formState.errors.date != undefined) {
+      return formState.errors.date.message ?? null;
+    }
+    if (formState.errors.attendees != undefined) {
+      return formState.errors.attendees.message ?? null;
+    }
+
+    const hasStartTime = startTime !== '';
+    const hasEndTime = endTime !== '';
+
+    if (hasStartTime !== hasEndTime) {
+      return '시작 시간과 종료 시간을 선택해주세요.';
+    }
+    if (hasTimeInputs && endTime <= startTime) {
+      return '종료 시간은 시작 시간보다 늦어야 합니다.';
+    }
+
+    return null;
+  })();
+
+  const isFilterComplete = hasTimeInputs && filterErrorMessage === null;
 
   useEffect(() => {
     const nextSearchParams = createRoomBookingSearchParams({
@@ -53,5 +70,6 @@ export function useRoomBookingForm() {
   return {
     form,
     isFilterComplete,
+    filterErrorMessage,
   };
 }

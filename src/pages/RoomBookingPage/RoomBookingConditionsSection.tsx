@@ -5,7 +5,6 @@ import { RoomBookingAttendeesField } from './RoomBookingAttendeesField';
 import { RoomBookingDateField } from './RoomBookingDateField';
 import { RoomBookingEndTimeField } from './RoomBookingEndTimeField';
 import { RoomBookingEquipmentField } from './RoomBookingEquipmentField';
-import { RoomBookingFilterError } from './RoomBookingFilterError';
 import { RoomBookingPreferredFloorField } from './RoomBookingPreferredFloorField';
 import { RoomBookingStartTimeField } from './RoomBookingStartTimeField';
 import { Room } from './types';
@@ -18,67 +17,63 @@ export function RoomBookingConditionsSection({ rooms }: RoomBookingConditionsSec
   const floors = [...new Set(rooms.map(room => room.floor))].sort((a, b) => a - b);
 
   return (
-    <>
+    <div
+      css={css`
+        padding: 0 24px;
+      `}
+    >
+      <SectionHeader title="예약 조건" />
+
+      <RoomBookingDateField />
+      <Spacing size={14} />
+
       <div
         css={css`
-          padding: 0 24px;
+          display: flex;
+          gap: 12px;
         `}
       >
-        <SectionHeader title="예약 조건" />
-
-        <RoomBookingDateField />
-        <Spacing size={14} />
-
         <div
           css={css`
-            display: flex;
-            gap: 12px;
+            flex: 1;
           `}
         >
-          <div
-            css={css`
-              flex: 1;
-            `}
-          >
-            <RoomBookingStartTimeField />
-          </div>
-          <div
-            css={css`
-              flex: 1;
-            `}
-          >
-            <RoomBookingEndTimeField />
-          </div>
+          <RoomBookingStartTimeField />
         </div>
-        <Spacing size={14} />
-
         <div
           css={css`
-            display: flex;
-            gap: 12px;
+            flex: 1;
           `}
         >
-          <div
-            css={css`
-              flex: 1;
-            `}
-          >
-            <RoomBookingAttendeesField />
-          </div>
-          <div
-            css={css`
-              flex: 1;
-            `}
-          >
-            <RoomBookingPreferredFloorField floors={floors} />
-          </div>
+          <RoomBookingEndTimeField />
         </div>
-        <Spacing size={14} />
-
-        <RoomBookingEquipmentField />
       </div>
+      <Spacing size={14} />
 
-      <RoomBookingFilterError />
-    </>
+      <div
+        css={css`
+          display: flex;
+          gap: 12px;
+        `}
+      >
+        <div
+          css={css`
+            flex: 1;
+          `}
+        >
+          <RoomBookingAttendeesField />
+        </div>
+        <div
+          css={css`
+            flex: 1;
+          `}
+        >
+          <RoomBookingPreferredFloorField floors={floors} />
+        </div>
+      </div>
+      <Spacing size={14} />
+
+      <RoomBookingEquipmentField />
+    </div>
   );
 }

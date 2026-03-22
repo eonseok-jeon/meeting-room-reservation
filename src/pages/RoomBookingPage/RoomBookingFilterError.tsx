@@ -1,20 +1,13 @@
 import { css } from '@emotion/react';
-import { useFormContext } from 'react-hook-form';
 import { Spacing } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
-import { RoomBookingFormValues } from './schema';
 
-export function RoomBookingFilterError() {
-  const { formState } = useFormContext<RoomBookingFormValues>();
+interface RoomBookingFilterErrorProps {
+  message: string | null;
+}
 
-  const filterError =
-    formState.errors.endTime?.message ??
-    formState.errors.startTime?.message ??
-    formState.errors.date?.message ??
-    formState.errors.attendees?.message ??
-    null;
-
-  if (filterError == null) {
+export function RoomBookingFilterError({ message }: RoomBookingFilterErrorProps) {
+  if (message == null) {
     return null;
   }
 
@@ -32,7 +25,7 @@ export function RoomBookingFilterError() {
         `}
         role="alert"
       >
-        {filterError}
+        {message}
       </span>
     </div>
   );
