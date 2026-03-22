@@ -16,15 +16,8 @@ export function ReservationDateSelectorSection({ date, onDateChange }: Reservati
       `}
     >
       <SectionHeader title="날짜 선택" />
-      <div
-        css={css`
-          display: flex;
-          flex-direction: column;
-          gap: 6px;
-        `}
-      >
-        <ReservationDateSelector date={date} min={formatDate(new Date())} onDateChange={onDateChange} />
-      </div>
+
+      <ReservationDateSelector date={date} min={formatDate(new Date())} onDateChange={onDateChange} />
     </div>
   );
 }
