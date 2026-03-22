@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Top, Spacing, Border, Button, Text, Select, ListRow } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
@@ -8,6 +8,7 @@ import { getRooms, getReservations, createReservation } from 'pages/remotes';
 import axios from 'axios';
 import { formatDate } from 'utils/formatDate';
 import { EQUIPMENT_LABELS } from 'constants/equipmentLabels';
+import { PageHeader } from 'components/PageHeader';
 
 const ALL_EQUIPMENT = ['tv', 'whiteboard', 'video', 'speaker'];
 
@@ -151,38 +152,38 @@ export function RoomBookingPage() {
         padding-bottom: 40px;
       `}
     >
-      <div
-        css={css`
-          padding: 12px 24px 0;
-        `}
-      >
-        <button
-          type="button"
-          onClick={() => navigate('/')}
-          aria-label="뒤로가기"
-          css={css`
-            background: none;
-            border: none;
-            padding: 0;
-            cursor: pointer;
-            font-size: 14px;
-            color: ${colors.grey600};
-            &:hover {
-              color: ${colors.grey900};
-            }
-          `}
-        >
-          ← 예약 현황으로
-        </button>
-      </div>
-      <Top.Top03
-        css={css`
-          padding-left: 24px;
-          padding-right: 24px;
-        `}
-      >
-        예약하기
-      </Top.Top03>
+      <PageHeader
+        title="예약하기"
+        topAddOn={
+          <Link
+            to="/"
+            css={css`
+              display: block;
+              width: fit-content;
+              margin: 0 24px;
+              padding: 12px 0 0;
+              border-radius: 18px;
+            `}
+          >
+            <button
+              aria-label="뒤로가기"
+              css={css`
+                background: none;
+                border: none;
+                padding: 0;
+                cursor: pointer;
+                font-size: 14px;
+                color: ${colors.grey600};
+                &:hover {
+                  color: ${colors.grey900};
+                }
+              `}
+            >
+              ← 예약 현황으로
+            </button>
+          </Link>
+        }
+      />
 
       {errorMessage && (
         <div

@@ -6,8 +6,8 @@ import { colors } from '_tosslib/constants/colors';
 import { MyReservationSection } from './MyReservationSection';
 import { ReservationDateSelectorSection } from './ReservationDateSelectorSection';
 import { DailyReservationTimelineSection } from './DailyReservationTimelineSection';
-import { ReservationTitleSection } from './ReservationTitleSection';
 import { formatDate } from '../../utils/formatDate';
+import { PageHeader } from 'components/PageHeader';
 
 export function ReservationStatusPage() {
   const [date, setDate] = useState(formatDate(new Date()));
@@ -19,7 +19,7 @@ export function ReservationStatusPage() {
         padding-bottom: 40px;
       `}
     >
-      <ReservationTitleSection />
+      <PageHeader title="회의실 예약" />
 
       <Spacing size={24} />
 
