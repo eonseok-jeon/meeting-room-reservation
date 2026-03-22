@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { formatDate } from 'utils/formatDate';
 import { ALL_EQUIPMENT, Equipment } from './constants';
@@ -46,7 +46,18 @@ function parseEquipment(value: string | null): Equipment[] {
   return value.split(',').filter((equipment): equipment is Equipment => ALL_EQUIPMENT.includes(equipment as Equipment));
 }
 
-function createSearchParams(filters: RoomBookingFilters) {
+export function readRoomBookingFilters(searchParams: URLSearchParams): RoomBookingFilters {
+  return {
+    date: parseDate(searchParams.get('date')),
+    startTime: searchParams.get('startTime') ?? '',
+    endTime: searchParams.get('endTime') ?? '',
+    equipment: parseEquipment(searchParams.get('equipment')),
+    attendees: parseAttendees(searchParams.get('attendees')),
+    preferredFloor: parsePreferredFloor(searchParams.get('floor')),
+  };
+}
+
+export function createRoomBookingSearchParams(filters: RoomBookingFilters) {
   const nextSearchParams = new URLSearchParams();
 
   nextSearchParams.set('date', filters.date);
@@ -78,19 +89,8 @@ export function useRoomBookingSearchParams() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const filters = useMemo<RoomBookingFilters>(() => {
-    return {
-      date: parseDate(searchParams.get('date')),
-      startTime: searchParams.get('startTime') ?? '',
-      endTime: searchParams.get('endTime') ?? '',
-      equipment: parseEquipment(searchParams.get('equipment')),
-      attendees: parseAttendees(searchParams.get('attendees')),
-      preferredFloor: parsePreferredFloor(searchParams.get('floor')),
-    };
+    return readRoomBookingFilters(searchParams);
   }, [searchParams]);
-
-  const normalizedSearchParams = useMemo(() => {
-    return createSearchParams(filters);
-  }, [filters]);
 
   const validationResult = useMemo(() => {
     return roomBookingFiltersSchema.safeParse(filters);
@@ -102,7 +102,7 @@ export function useRoomBookingSearchParams() {
   const updateFilters = useCallback(
     (updates: Partial<RoomBookingFilters>) => {
       setSearchParams(
-        createSearchParams({
+        createRoomBookingSearchParams({
           ...filters,
           ...updates,
         }),
@@ -122,12 +122,6 @@ export function useRoomBookingSearchParams() {
     },
     [filters.equipment, updateFilters]
   );
-
-  useEffect(() => {
-    if (normalizedSearchParams.toString() !== searchParams.toString()) {
-      setSearchParams(normalizedSearchParams, { replace: true });
-    }
-  }, [normalizedSearchParams, searchParams, setSearchParams]);
 
   return {
     ...filters,
