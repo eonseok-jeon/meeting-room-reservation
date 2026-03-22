@@ -4,12 +4,13 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Top, Spacing, Border, Button, Text, Select, ListRow } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
-import { getRooms, getReservations, createReservation } from 'pages/remotes';
+import { createReservation } from 'pages/remotes';
 import axios from 'axios';
 import { formatDate } from 'utils/formatDate';
 import { EQUIPMENT_LABELS } from 'constants/equipmentLabels';
 import { PageHeader } from 'components/PageHeader';
 import { SectionHeader } from 'components/SectionHeader';
+import { getReservationsQueryOptions, getRoomsQueryOptions } from 'pages/queryOptions';
 
 const ALL_EQUIPMENT = ['tv', 'whiteboard', 'video', 'speaker'];
 
@@ -51,8 +52,9 @@ export function RoomBookingPage() {
     setSearchParams(params, { replace: true });
   }, [date, startTime, endTime, attendees, equipment, preferredFloor, setSearchParams]);
 
-  const { data: rooms = [] } = useQuery(['rooms'], getRooms);
-  const { data: reservations = [] } = useQuery(['reservations', date], () => getReservations(date), {
+  const { data: rooms = [] } = useQuery(getRoomsQueryOptions());
+  const { data: reservations = [] } = useQuery({
+    ...getReservationsQueryOptions(date),
     enabled: !!date,
   });
 

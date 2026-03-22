@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Border, Button, Spacing } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
@@ -8,6 +8,7 @@ import { ReservationDateSelectorSection } from './ReservationDateSelectorSection
 import { DailyReservationTimelineSection } from './DailyReservationTimelineSection';
 import { formatDate } from '../../utils/formatDate';
 import { PageHeader } from 'components/PageHeader';
+import { ErrorBoundary } from 'react-error-boundary';
 
 export function ReservationStatusPage() {
   const [date, setDate] = useState(formatDate(new Date()));
@@ -29,11 +30,15 @@ export function ReservationStatusPage() {
       <Border size={8} />
       <Spacing size={24} />
 
-      <DailyReservationTimelineSection date={date} />
+      <ErrorBoundary fallback={<DailyReservationTimelineSection.Error />}>
+        <Suspense fallback={<DailyReservationTimelineSection.Skeleton />}>
+          <DailyReservationTimelineSection date={date} />
+        </Suspense>
 
-      <Spacing size={24} />
-      <Border size={8} />
-      <Spacing size={24} />
+        <Spacing size={24} />
+        <Border size={8} />
+        <Spacing size={24} />
+      </ErrorBoundary>
 
       <MyReservationSection />
 

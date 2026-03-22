@@ -2,11 +2,12 @@ import { css } from '@emotion/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Spacing, Text } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
-import { cancelReservation, getMyReservations, getRooms } from 'pages/remotes';
+import { cancelReservation } from 'pages/remotes';
 import { MyReservationList } from './MyReservationList';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { SectionHeader } from 'components/SectionHeader';
+import { getMyReservationsQueryOptions, getRoomsQueryOptions } from 'pages/queryOptions';
 
 interface Room {
   id: string;
@@ -14,9 +15,10 @@ interface Room {
 }
 
 export function MyReservationSection() {
-  const { data: rooms = [] } = useQuery(['rooms'], getRooms);
+  const { data: rooms = [] } = useQuery(getRoomsQueryOptions());
   const hasRooms = rooms.length > 0;
-  const { data: myReservationList = [] } = useQuery(['myReservations'], getMyReservations, {
+  const { data: myReservationList = [] } = useQuery({
+    ...getMyReservationsQueryOptions(),
     enabled: hasRooms,
     select: reservations =>
       reservations.map(reservation => ({

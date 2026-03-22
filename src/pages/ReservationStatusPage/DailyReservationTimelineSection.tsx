@@ -1,11 +1,11 @@
-import { css } from '@emotion/react';
+import { css, keyframes } from '@emotion/react';
 import { useState } from 'react';
 import { Spacing, Text } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
 import { EQUIPMENT_LABELS } from 'constants/equipmentLabels';
-import { useQuery } from '@tanstack/react-query';
-import { getReservations, getRooms } from 'pages/remotes';
+import { useSuspenseQueries } from '@tanstack/react-query';
 import { SectionHeader } from 'components/SectionHeader';
+import { getReservationsQueryOptions, getRoomsQueryOptions } from 'pages/queryOptions';
 
 interface Room {
   id: string;
@@ -42,13 +42,11 @@ function timeToMinutes(time: string): number {
 }
 
 export function DailyReservationTimelineSection({ date }: { date: string }) {
-  const { data: rooms = [] } = useQuery(['rooms'], getRooms);
-  const hasDate = date !== '';
-  const { data: reservations = [] } = useQuery(['reservations', date], () => getReservations(date), {
-    enabled: hasDate,
-  });
-
   const [activeReservation, setActiveReservation] = useState<string | null>(null);
+
+  const [{ data: rooms }, { data: reservations }] = useSuspenseQueries({
+    queries: [getRoomsQueryOptions(), getReservationsQueryOptions(date)],
+  });
 
   return (
     <div
@@ -232,3 +230,131 @@ export function DailyReservationTimelineSection({ date }: { date: string }) {
     </div>
   );
 }
+
+DailyReservationTimelineSection.Skeleton = () => {
+  return (
+    <div
+      css={css`
+        padding: 0 24px;
+      `}
+    >
+      <SectionHeader title="예약 현황" />
+      <div
+        css={css`
+          background: ${colors.grey50};
+          border-radius: 14px;
+          padding: 16px;
+        `}
+      >
+        <div
+          css={css`
+            display: flex;
+            align-items: flex-end;
+            margin-bottom: 8px;
+          `}
+        >
+          <div
+            css={css`
+              width: 80px;
+              flex-shrink: 0;
+              padding-right: 8px;
+            `}
+          />
+          <div
+            css={css`
+              flex: 1;
+              display: flex;
+              justify-content: space-between;
+            `}
+          >
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div
+                key={index}
+                css={css`
+                  width: 18px;
+                  height: 10px;
+                  border-radius: 999px;
+                  background: ${colors.grey200};
+                  animation: ${skeletonPulse} 1.2s ease-in-out infinite;
+                  animation-delay: ${index * 0.08}s;
+                `}
+              />
+            ))}
+          </div>
+        </div>
+
+        {Array.from({ length: 5 }).map((_, index) => (
+          <div
+            key={index}
+            css={css`
+              display: flex;
+              align-items: center;
+              height: 32px;
+              ${index > 0 ? 'margin-top: 4px;' : ''}
+            `}
+          >
+            <div
+              css={css`
+                width: 80px;
+                flex-shrink: 0;
+                padding-right: 8px;
+              `}
+            >
+              <div
+                css={css`
+                  width: 56px;
+                  height: 12px;
+                  border-radius: 999px;
+                  background: ${colors.grey200};
+                  animation: ${skeletonPulse} 1.2s ease-in-out infinite;
+                  animation-delay: ${index * 0.08}s;
+                `}
+              />
+            </div>
+            <div
+              css={css`
+                flex: 1;
+                height: 24px;
+                background: ${colors.white};
+                border-radius: 6px;
+                position: relative;
+                overflow: hidden;
+              `}
+            >
+              <div
+                css={css`
+                  position: absolute;
+                  top: 4px;
+                  left: ${12 + index * 11}%;
+                  width: ${18 + (index % 3) * 8}%;
+                  height: 16px;
+                  border-radius: 4px;
+                  background: ${colors.grey200};
+                  animation: ${skeletonPulse} 1.2s ease-in-out infinite;
+                  animation-delay: ${index * 0.12}s;
+                `}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const skeletonPulse = keyframes`
+  0% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0.45;
+  }
+`;
+
+/** 에러 시 아무것도 안 보이게 하기 */
+DailyReservationTimelineSection.Error = () => {
+  return <></>;
+};
