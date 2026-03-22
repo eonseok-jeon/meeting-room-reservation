@@ -60,6 +60,6 @@ function createRoomChain(rooms: Room[]) {
   };
 }
 
-export function filterRooms(rooms: Room[]) {
+export function createRoomQuery(rooms: Room[]) {
   return createRoomChain([...rooms]);
 }

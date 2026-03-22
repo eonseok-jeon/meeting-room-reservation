@@ -7,7 +7,7 @@ import { getReservationsQueryOptions } from 'pages/queryOptions';
 import { SelectedRoomCard, UnselectedRoomCard } from './RoomBookingRoomCard';
 import { RoomBookingFormValues } from './schema';
 import { Room } from './types';
-import { filterRooms } from './rooms';
+import { createRoomQuery } from './createRoomQuery';
 
 interface RoomBookingAvailableRoomsListProps {
   rooms: Room[];
@@ -26,7 +26,7 @@ export function RoomBookingAvailableRoomsList({ rooms }: RoomBookingAvailableRoo
 
   const { data: reservations } = useSuspenseQuery(getReservationsQueryOptions(date));
 
-  const availableRooms = filterRooms(rooms)
+  const availableRooms = createRoomQuery(rooms)
     .filterByCapacity(attendees)
     .filterByEquipment(equipment)
     .filterByFloor(preferredFloor)
