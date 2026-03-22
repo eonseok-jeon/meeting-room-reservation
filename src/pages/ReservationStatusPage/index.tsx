@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Border, Button, Spacing } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
 import { MyReservationSection } from './MyReservationSection';
@@ -11,8 +11,6 @@ import { formatDate } from '../../utils/formatDate';
 
 export function ReservationStatusPage() {
   const [date, setDate] = useState(formatDate(new Date()));
-
-  const navigate = useNavigate();
 
   return (
     <div
@@ -44,16 +42,16 @@ export function ReservationStatusPage() {
       <Spacing size={24} />
 
       {/* 예약하기 버튼 */}
-      <div
+      <Link
+        to="/booking"
         css={css`
-          padding: 0 24px;
+          display: block;
+          margin: 0 24px;
+          border-radius: 18px;
         `}
       >
-        <Button display="full" onClick={() => navigate('/booking')}>
-          예약하기
-        </Button>
-      </div>
-      <Spacing size={24} />
+        <Button display="full">예약하기</Button>
+      </Link>
     </div>
   );
 }
