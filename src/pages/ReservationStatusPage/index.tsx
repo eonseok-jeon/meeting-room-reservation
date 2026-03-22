@@ -31,9 +31,7 @@ export function ReservationStatusPage() {
       <Spacing size={24} />
 
       <ErrorBoundary fallback={<DailyReservationTimelineSection.Error />}>
-        <Suspense fallback={<DailyReservationTimelineSection.Skeleton />}>
-          <DailyReservationTimelineSection date={date} />
-        </Suspense>
+        <DailyReservationTimelineSection date={date} />
 
         <Spacing size={24} />
         <Border size={8} />
