@@ -1,14 +1,14 @@
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { RoomBookingPageContent } from './RoomBookingPageContent';
-import { useNormalizeRoomBookingSearchParams } from './useNormalizeRoomBookingSearchParams';
+import { useCanonicalizeRoomBookingSearchParams } from './useCanonicalizeRoomBookingSearchParams';
 import { PageHeader } from 'components/PageHeader';
 import { colors } from '_tosslib/constants/colors';
 import { css } from '@emotion/react';
 import { RoomBookingBackLink } from './RoomBookingBackLink';
 
 export function RoomBookingPage() {
-  useNormalizeRoomBookingSearchParams();
+  useCanonicalizeRoomBookingSearchParams();
 
   return (
     <ErrorBoundary fallback={<RoomBookingPageContent.Error />}>

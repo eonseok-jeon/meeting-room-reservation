@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { createRoomBookingSearchParams, readRoomBookingFilters } from './roomBookingSearchParams';
 
-export function useNormalizeRoomBookingSearchParams() {
+export function useCanonicalizeRoomBookingSearchParams() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const normalizedSearchParams = useMemo(() => {
