@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient, useSuspenseQueries } from '@tanstack/react-query';
 import { Spacing, Text } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
 import { cancelReservation } from 'pages/remotes';
@@ -15,17 +15,13 @@ interface Room {
 }
 
 export function MyReservationSection() {
-  const { data: rooms = [] } = useQuery(getRoomsQueryOptions());
-  const hasRooms = rooms.length > 0;
-  const { data: myReservationList = [] } = useQuery({
-    ...getMyReservationsQueryOptions(),
-    enabled: hasRooms,
-    select: reservations =>
-      reservations.map(reservation => ({
-        ...reservation,
-        roomName: rooms.find(room => room.id === reservation.roomId)?.name ?? reservation.roomId,
-      })),
+  const [{ data: rooms }, { data: reservations }] = useSuspenseQueries({
+    queries: [getRoomsQueryOptions(), getMyReservationsQueryOptions()],
   });
+  const myReservationList = reservations.map(reservation => ({
+    ...reservation,
+    roomName: rooms.find(room => room.id === reservation.roomId)?.name ?? reservation.roomId,
+  }));
 
   const location = useLocation();
   const locationState = location.state as { message?: string } | null;
@@ -127,3 +123,31 @@ export function MyReservationSection() {
     </>
   );
 }
+
+MyReservationSection.Skeleton = () => {
+  return (
+    <div
+      css={css`
+        padding: 0 24px;
+      `}
+    >
+      <SectionHeader title="내 예약" />
+      <div
+        css={css`
+          padding: 40px 0;
+          text-align: center;
+          background: ${colors.grey50};
+          border-radius: 14px;
+        `}
+      >
+        <Text typography="t6" color={colors.grey400}>
+          예약 내역을 불러오는 중입니다.
+        </Text>
+      </div>
+    </div>
+  );
+};
+
+MyReservationSection.Error = () => {
+  return <></>;
+};

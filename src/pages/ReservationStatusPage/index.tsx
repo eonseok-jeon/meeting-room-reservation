@@ -38,7 +38,11 @@ export function ReservationStatusPage() {
         <Spacing size={24} />
       </ErrorBoundary>
 
-      <MyReservationSection />
+      <ErrorBoundary fallback={<MyReservationSection.Error />}>
+        <Suspense fallback={<MyReservationSection.Skeleton />}>
+          <MyReservationSection />
+        </Suspense>
+      </ErrorBoundary>
 
       <Spacing size={24} />
       <Border size={8} />
