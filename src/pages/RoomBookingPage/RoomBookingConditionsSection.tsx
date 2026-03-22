@@ -8,14 +8,17 @@ import { RoomBookingEndTimeField } from './RoomBookingEndTimeField';
 import { RoomBookingEquipmentField } from './RoomBookingEquipmentField';
 import { RoomBookingPreferredFloorField } from './RoomBookingPreferredFloorField';
 import { RoomBookingStartTimeField } from './RoomBookingStartTimeField';
+import { Room } from './types';
 import { useRoomBookingSearchParams } from './useRoomBookingSearchParams';
 
 interface RoomBookingConditionsSectionProps {
-  floors: number[];
+  rooms: Room[];
 }
 
-export function RoomBookingConditionsSection({ floors }: RoomBookingConditionsSectionProps) {
+export function RoomBookingConditionsSection({ rooms }: RoomBookingConditionsSectionProps) {
   const { validationError } = useRoomBookingSearchParams();
+
+  const floors = [...new Set(rooms.map(room => room.floor))].sort((a, b) => a - b);
 
   return (
     <>
