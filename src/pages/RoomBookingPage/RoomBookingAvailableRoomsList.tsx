@@ -1,20 +1,38 @@
 import { css } from '@emotion/react';
+import { useFormContext } from 'react-hook-form';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { Text } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
+import { getReservationsQueryOptions } from 'pages/queryOptions';
 import { SelectedRoomCard, UnselectedRoomCard } from './RoomBookingRoomCard';
+import { RoomBookingFormValues } from './schema';
 import { Room } from './types';
+import { filterRooms } from './rooms';
 
 interface RoomBookingAvailableRoomsListProps {
-  availableRooms: Room[];
-  onSelectRoom: (roomId: string) => void;
-  selectedRoomId: string;
+  rooms: Room[];
 }
 
-export function RoomBookingAvailableRoomsList({
-  availableRooms,
-  onSelectRoom,
-  selectedRoomId,
-}: RoomBookingAvailableRoomsListProps) {
+export function RoomBookingAvailableRoomsList({ rooms }: RoomBookingAvailableRoomsListProps) {
+  const { setValue, watch } = useFormContext<RoomBookingFormValues>();
+
+  const date = watch('date');
+  const startTime = watch('startTime');
+  const endTime = watch('endTime');
+  const attendees = watch('attendees');
+  const equipment = watch('equipment');
+  const preferredFloor = watch('preferredFloor');
+  const selectedRoomId = watch('selectedRoomId');
+
+  const { data: reservations } = useSuspenseQuery(getReservationsQueryOptions(date));
+
+  const availableRooms = filterRooms(rooms)
+    .filterByCapacity(attendees)
+    .filterByEquipment(equipment)
+    .filterByFloor(preferredFloor)
+    .filterByTimeConflict({ reservations, date, startTime, endTime })
+    .sortByFloorAndName().rooms;
+
   if (availableRooms.length === 0) {
     return (
       <div
@@ -44,10 +62,10 @@ export function RoomBookingAvailableRoomsList({
         const isSelected = selectedRoomId === room.id;
 
         if (isSelected) {
-          return <SelectedRoomCard key={room.id} room={room} onClick={() => onSelectRoom(room.id)} />;
+          return <SelectedRoomCard key={room.id} room={room} onClick={() => setValue('selectedRoomId', room.id)} />;
         }
 
-        return <UnselectedRoomCard key={room.id} room={room} onClick={() => onSelectRoom(room.id)} />;
+        return <UnselectedRoomCard key={room.id} room={room} onClick={() => setValue('selectedRoomId', room.id)} />;
       })}
     </div>
   );

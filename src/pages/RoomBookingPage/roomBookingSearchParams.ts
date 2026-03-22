@@ -82,4 +82,3 @@ export function createRoomBookingSearchParams(filters: RoomBookingFilters) {
 
   return nextSearchParams;
 }
-
