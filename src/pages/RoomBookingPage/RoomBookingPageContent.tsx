@@ -7,7 +7,6 @@ import { colors } from '_tosslib/constants/colors';
 import { PageHeader } from 'components/PageHeader';
 import { getRoomsQueryOptions } from 'pages/queryOptions';
 import { RoomBookingAvailableRoomsSection } from './RoomBookingAvailableRoomsSection';
-import { RoomBookingBackLink } from './RoomBookingBackLink';
 import { RoomBookingConditionsSection } from './RoomBookingConditionsSection';
 import { RoomBookingErrorBanner } from './RoomBookingErrorBanner';
 import { RoomBookingFilterError } from './RoomBookingFilterError';
@@ -20,34 +19,25 @@ export function RoomBookingPageContent() {
 
   return (
     <FormProvider {...form}>
-      <div
-        css={css`
-          background: ${colors.white};
-          padding-bottom: 40px;
-        `}
-      >
-        <PageHeader title="예약하기" topAddOn={<RoomBookingBackLink />} />
+      <RoomBookingErrorBanner />
 
-        <RoomBookingErrorBanner />
+      <Spacing size={24} />
 
-        <Spacing size={24} />
+      <RoomBookingConditionsSection rooms={rooms} />
 
-        <RoomBookingConditionsSection rooms={rooms} />
+      <RoomBookingFilterError message={filterErrorMessage} />
 
-        <RoomBookingFilterError message={filterErrorMessage} />
+      <Spacing size={24} />
+      <Border size={8} />
+      <Spacing size={24} />
 
-        <Spacing size={24} />
-        <Border size={8} />
-        <Spacing size={24} />
+      {isFilterComplete ? (
+        <Suspense fallback={<RoomBookingAvailableRoomsSection.Skeleton />}>
+          <RoomBookingAvailableRoomsSection rooms={rooms} />
+        </Suspense>
+      ) : null}
 
-        {isFilterComplete ? (
-          <Suspense fallback={<RoomBookingAvailableRoomsSection.Skeleton />}>
-            <RoomBookingAvailableRoomsSection rooms={rooms} />
-          </Suspense>
-        ) : null}
-
-        <Spacing size={24} />
-      </div>
+      <Spacing size={24} />
     </FormProvider>
   );
 }
