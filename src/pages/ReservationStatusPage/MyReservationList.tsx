@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { Button, ListRow } from '_tosslib/components';
+import { Button, ListRow, Text } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
 import { EQUIPMENT_LABELS } from 'constants/equipmentLabels';
 
@@ -20,6 +20,23 @@ interface MyReservationListProps {
 }
 
 export function MyReservationList({ myReservationList, onCancelReservation }: MyReservationListProps) {
+  if (myReservationList.length === 0) {
+    return (
+      <div
+        css={css`
+          padding: 40px 0;
+          text-align: center;
+          background: ${colors.grey50};
+          border-radius: 14px;
+        `}
+      >
+        <Text typography="t6" color={colors.grey500}>
+          예약 내역이 없습니다.
+        </Text>
+      </div>
+    );
+  }
+
   return (
     <div
       css={css`

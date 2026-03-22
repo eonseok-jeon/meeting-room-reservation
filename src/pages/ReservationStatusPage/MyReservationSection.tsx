@@ -91,34 +91,19 @@ export function MyReservationSection() {
           }
         />
 
-        {myReservationList.length === 0 ? (
-          <div
-            css={css`
-              padding: 40px 0;
-              text-align: center;
-              background: ${colors.grey50};
-              border-radius: 14px;
-            `}
-          >
-            <Text typography="t6" color={colors.grey500}>
-              예약 내역이 없습니다.
-            </Text>
-          </div>
-        ) : (
-          <MyReservationList
-            myReservationList={myReservationList}
-            onCancelReservation={reservationId => {
-              cancelReservationMutation
-                .mutateAsync(reservationId)
-                .then(() => {
-                  setMessage({ type: 'success', text: '예약이 취소되었습니다.' });
-                })
-                .catch(() => {
-                  setMessage({ type: 'error', text: '취소에 실패했습니다.' });
-                });
-            }}
-          />
-        )}
+        <MyReservationList
+          myReservationList={myReservationList}
+          onCancelReservation={reservationId => {
+            cancelReservationMutation
+              .mutateAsync(reservationId)
+              .then(() => {
+                setMessage({ type: 'success', text: '예약이 취소되었습니다.' });
+              })
+              .catch(() => {
+                setMessage({ type: 'error', text: '취소에 실패했습니다.' });
+              });
+          }}
+        />
       </div>
     </>
   );
